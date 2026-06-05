@@ -1,87 +1,87 @@
-1|---
-2|layout: default
-3|---
-4|
-5|<div x-data="{ stories: [], intervalId: null }"
-6|     x-effect="stories = await getItems(current, page)"
-7|     x-init="
-8|       if (page == 1) {
-9|         intervalId = setInterval(async () => {
-10|          stories = await getItems(current, page)
-11|        }, 150000)
-12|      }">
-13|
-14|  <template x-if="stories.length === 0">
-15|    {%- include loading.html -%}
-16|  </template>
-17|
-18|  <template x-if="stories.length > 0">
-19|
-20|    <div>
-21|      <div class="refresh-hint" x-show="page == 1">
-22|        Refreshing every 2.5 minutes to match HN updates
-23|      </div>
-24|
-25|      <ul class="stories-list">
-26|
-27|        <template x-for="story, index in stories">
-28|
-29|          <li class="story-item">
-30|
-31|            <div class="story-rank" x-text="page == 1 ? index + 1 : ((page - 1) * stories.length) + (index + 1)"></div>
-32|
-33|            <div class="story-body">
-34|
-35|              <template x-if="story.hasOwnProperty('domain')">
-36|                <a :href="story.url" target="_blank" rel="noopener noreferrer">
-37|                  <div class="story-title" x-text="story.title"></div>
-38|                  <span class="story-domain" x-text="`${story.domain}`"></span>
-39|                </a>
-40|              </template>
-41|
-42|              <template x-if="!story.hasOwnProperty('domain')">
-43|                <a :href="getItemLink(story.id)">
-44|                  <div class="story-title" x-text="story.title"></div>
-45|                </a>
-46|              </template>
-47|
-48|              <div class="story-meta">
-49|                <span x-text="story.points"></span>
-50|                <span>points</span>
-51|                <span class="sep">·</span>
-52|                <span>by</span>
-53|                <a :href="getUserLink(story.user)">
-54|                  <span x-text="story.user"></span>
-55|                </a>
-56|                <span class="sep">·</span>
-57|                <span x-text="story.time_ago"></span>
-58|                <span class="sep">·</span>
-59|                <a :href="getItemLink(story.id)">
-60|                  <span x-text="story.comments_count"></span>
-61|                  <span>comments</span>
-62|                </a>
-63|              </div>
-64|
-65|            </div>
-66|
-67|          </li>
-68|
-69|        </template>
-70|
-71|      </ul>
-72|
-73|      <div class="page-nav">
-74|        <a :class="Number(page) <= 1 ? 'disabled' : ''" :href="`/?section=${current}&page=${Number(page) - 1}`">← Previous</a>
-75|        <a :class="stories.length === 0 ? 'disabled' : ''" :href="`/?section=${current}&page=${Number(page) + 1}`">Next →</a>
-76|      </div>
-77|
-78|      <div class="text-center my-2">
-79|          <a href="/about" class="text-underline">About</a>
-80|      </div>
-81|
-82|    </div>
-83|
-84|  </template>
-85|
-86|</div>
-87|
+---
+layout: default
+permalink: /
+---
+
+<div x-data="{ stories: [], intervalId: null }"
+     x-effect="stories = await getItems(current, page)"
+     x-init="
+       if (page == 1) {
+         intervalId = setInterval(async () => {
+          stories = await getItems(current, page)
+        }, 150000)
+      }">
+
+  <template x-if="stories.length === 0">
+    {%- include loading.html -%}
+  </template>
+
+  <template x-if="stories.length > 0">
+
+    <div>
+      <div class="refresh-hint" x-show="page == 1">
+        Refreshing every 2.5 minutes to match HN updates
+      </div>
+
+      <ul class="stories-list">
+
+        <template x-for="story, index in stories">
+
+          <li class="story-item">
+
+            <div class="story-rank" x-text="page == 1 ? index + 1 : ((page - 1) * stories.length) + (index + 1)"></div>
+
+            <div class="story-body">
+
+              <template x-if="story.hasOwnProperty('domain')">
+                <a :href="story.url" target="_blank" rel="noopener noreferrer">
+                  <div class="story-title" x-text="story.title"></div>
+                  <span class="story-domain" x-text="`${story.domain}`"></span>
+                </a>
+              </template>
+
+              <template x-if="!story.hasOwnProperty('domain')">
+                <a :href="getItemLink(story.id)">
+                  <div class="story-title" x-text="story.title"></div>
+                </a>
+              </template>
+
+              <div class="story-meta">
+                <span x-text="story.points"></span>
+                <span>points</span>
+                <span class="sep">·</span>
+                <span>by</span>
+                <a :href="getUserLink(story.user)">
+                  <span x-text="story.user"></span>
+                </a>
+                <span class="sep">·</span>
+                <span x-text="story.time_ago"></span>
+                <span class="sep">·</span>
+                <a :href="getItemLink(story.id)">
+                  <span x-text="story.comments_count"></span>
+                  <span>comments</span>
+                </a>
+              </div>
+
+            </div>
+
+          </li>
+
+        </template>
+
+      </ul>
+
+      <div class="page-nav">
+        <a :class="Number(page) <= 1 ? 'disabled' : ''" :href="`/?section=${current}&page=${Number(page) - 1}`">← Previous</a>
+        <a :class="stories.length === 0 ? 'disabled' : ''" :href="`/?section=${current}&page=${Number(page) + 1}`">Next →</a>
+      </div>
+
+      <div class="text-center my-2">
+          <a href="/about" class="text-underline">About</a>
+      </div>
+
+    </div>
+
+  </template>
+
+</div>
