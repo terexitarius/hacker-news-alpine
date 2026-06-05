@@ -42,7 +42,7 @@ const getUserLink = (user) => {
 }
 
 const getItemLink = (id) => {
-    return `/item?id=${id}.json`
+    return `/item/?id=${id}`
 }
 
 const getComments = (obj) => {

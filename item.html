@@ -1,73 +1,75 @@
-1|---
-2|layout: default
-3|title: Comments
-4|---
-5|
-6|<div x-data="{ story: { }, intervalId: null }" x-init="
-7|  story = await getItem(getParam(document.location.search, 'id').slice(0, -5));
-8|  intervalId = setInterval(async () => {
-9|    story = await getItem(getParam(document.location.search, 'id').slice(0, -5))
-10|  }, 150000)
-11|">
-12|
-13|  <template x-if="!story.hasOwnProperty('title')">
-14|    {%- include loading.html -%}
-15|  </template>
-16|
-17|  <template x-if="story.hasOwnProperty('title')">
-18|    <div>
-19|
-20|      <div class="story-card">
-21|        <h1 class="story-title" x-text="story.title"></h1>
-22|
-23|        <template x-if="story.hasOwnProperty('domain')">
-24|          <a :href="story.url" target="_blank" rel="noopener noreferrer" class="story-domain-link" x-text="story.domain"></a>
-25|        </template>
-26|
-27|        <p class="item-info">
-28|          <span x-text="story.points"></span>
-29|          <span> points · by </span>
-30|          <a :href="getUserLink(story.user)">
-31|            <span x-text="story.user" class="text-bold"></span>
-32|          </a>
-33|          <span> · </span>
-34|          <span x-text="story.time_ago"></span>
-35|        </p>
-36|
-37|        <div x-html="story.content" class="content"></div>
-38|
-39|        <div class="story-meta" style="margin-top:1.25rem">
-40|          <a :href="story.url" target="_blank" rel="noopener noreferrer">Read full article →</a>
-41|          <span class="sep">·</span>
-42|          <a :href="getItemLink(story.id)">
-43|            <span x-text="story.comments_count"></span>
-44|            <span> comments</span>
-45|          </a>
-46|        </div>
-47|      </div>
-48|
-49|      <h2 class="comments-header">Discussion</h2>
-50|
-51|      <template x-for="comment in getComments(story)">
-52|        <div class="comment-wrapper" :style="{ marginLeft: `${Math.min(comment.level, 4) * 1.1}rem` }">
-53|          <div class="comment">
-54|            <p class="comment-head">
-55|              <a :href="getUserLink(comment.user)">
-56|                <span x-text="comment.user"></span>
-57|              </a>
-58|              <span class="sep">·</span>
-59|              <span x-text="comment.time_ago"></span>
-60|            </p>
-61|            <div x-html="comment.content"></div>
-62|          </div>
-63|        </div>
-64|      </template>
-65|
-66|      <div class="text-center my-2">
-67|          <a href="/">← Back to top</a>
-68|      </div>
-69|
-70|    </div>
-71|  </template>
-72|
-73|</div>
+---
+layout: default
+permalink: /item/
+title: Comments
+---
+
+<div x-data="{ story: { }, intervalId: null }"
+     x-init="
+  story = await getItem(getParam(document.location.search, 'id').slice(0, -5));
+  intervalId = setInterval(async () => {
+    story = await getItem(getParam(document.location.search, 'id').slice(0, -5))
+  }, 150000)
+">
+
+  <template x-if="!story.hasOwnProperty('title')">
+    {%- include loading.html -%}
+  </template>
+
+  <template x-if="story.hasOwnProperty('title')">
+    <div>
+
+      <div class="story-card">
+        <h1 class="story-title" x-text="story.title"></h1>
+
+        <template x-if="story.hasOwnProperty('domain')">
+          <a :href="story.url" target="_blank" rel="noopener noreferrer" class="story-domain-link" x-text="story.domain"></a>
+        </template>
+
+        <p class="item-info">
+          <span x-text="story.points"></span>
+          <span> points · by </span>
+          <a :href="getUserLink(story.user)">
+            <span x-text="story.user" class="text-bold"></span>
+          </a>
+          <span> · </span>
+          <span x-text="story.time_ago"></span>
+        </p>
+
+        <div x-html="story.content" class="content"></div>
+
+        <div class="story-meta" style="margin-top:1.25rem">
+          <a :href="story.url" target="_blank" rel="noopener noreferrer">Read full article →</a>
+          <span class="sep">·</span>
+          <a :href="getItemLink(story.id)">
+            <span x-text="story.comments_count"></span>
+            <span> comments</span>
+          </a>
+        </div>
+      </div>
+
+      <h2 class="comments-header">Discussion</h2>
+
+      <template x-for="comment in getComments(story)">
+        <div class="comment-wrapper" :style="{ marginLeft: `${Math.min(comment.level, 4) * 1.1}rem` }">
+          <div class="comment">
+            <p class="comment-head">
+              <a :href="getUserLink(comment.user)">
+                <span x-text="comment.user"></span>
+              </a>
+              <span class="sep">·</span>
+              <span x-text="comment.time_ago"></span>
+            </p>
+            <div x-html="comment.content"></div>
+          </div>
+        </div>
+      </template>
+
+      <div class="text-center my-2">
+          <a href="/">← Back to top</a>
+      </div>
+
+    </div>
+  </template>
+
+</div>
