@@ -24,7 +24,16 @@ const getItems = async (section, page) => {
     res = await fetch(`${BASE_URL}${SECTIONS[section]}/${page}.json`)
     stories = await res.json()
 
-    // console.log(stories);
+    stories.forEach(story => {
+        if (story.url) {
+            try {
+                story.domain = new URL(story.url).hostname.replace('^www\.', '')
+            } catch (e) {
+                story.domain = null
+            }
+        }
+    })
+
     return stories
 }
 

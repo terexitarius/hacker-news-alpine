@@ -13,63 +13,65 @@ layout: default
 
     <div>
 
-      <template x-for="story, index in stories">
+      <ul class="stories-list">
 
-        <div class="item my-1">
-          <div>
-            <p class="item-no" x-text="page == 1 ? index + 1 : ((page - 1) * stories.length) + (index + 1)"></p>
-          </div>
+        <template x-for="story, index in stories">
 
-          <div>
+          <li class="story-item">
 
-            <template x-if="story.hasOwnProperty('domain')">
-              <a :href="story.url" target="_blank" rel="noopener noreferrer">
-                <p>
-                  <span x-text="story.title" class="text-bold"></span>
-                  <span x-text="`(${story.domain})`"></span>
-                </p>
-              </a>
-            </template>
+            <div class="story-rank" x-text="page == 1 ? index + 1 : ((page - 1) * stories.length) + (index + 1)"></div>
 
-            <template x-if="!story.hasOwnProperty('domain')">
-              <a :href="getItemLink(story.id)">
-                <p>
-                  <span x-text="story.title" class="text-bold"></span>
-                </p>
-              </a>
-            </template>
-            
-            <p class="item-info">
-              <span x-text="story.points"></span>
-              <span> points by </span>
-              <a :href="getUserLink(story.user)">
-                <span x-text="story.user" class="text-underline"></span>
-              </a>
-              <span> | </span>
-              <span x-text="story.time_ago"></span>
-              <span> | </span>
-              <a :href="getItemLink(story.id)" class="text-underline">
-                <span x-text="story.comments_count"></span>
-                <span> comments</span>
-              </a>
-            </p>
+            <div class="story-body">
 
-          </div>
+              <template x-if="story.hasOwnProperty('domain')">
+                <a :href="story.url" target="_blank" rel="noopener noreferrer">
+                  <div class="story-title" x-text="story.title"></div>
+                  <span class="story-domain" x-text="`${story.domain}`"></span>
+                </a>
+              </template>
 
-        </div>
+              <template x-if="!story.hasOwnProperty('domain')">
+                <a :href="getItemLink(story.id)">
+                  <div class="story-title" x-text="story.title"></div>
+                </a>
+              </template>
 
-      </template>
+              <div class="story-meta">
+                <span x-text="story.points"></span>
+                <span>points</span>
+                <span class="sep">·</span>
+                <span>by</span>
+                <a :href="getUserLink(story.user)">
+                  <span x-text="story.user"></span>
+                </a>
+                <span class="sep">·</span>
+                <span x-text="story.time_ago"></span>
+                <span class="sep">·</span>
+                <a :href="getItemLink(story.id)">
+                  <span x-text="story.comments_count"></span>
+                  <span>comments</span>
+                </a>
+              </div>
 
-      <div class="text-center my-2">
-        <h3><a :href="`/?section=${current}&page=${Number(page) + 1}`" class="text-bold">More »</a></h3>
+            </div>
+
+          </li>
+
+        </template>
+
+      </ul>
+
+      <div class="page-nav">
+        <a :class="Number(page) <= 1 ? 'disabled' : ''" :href="`/?section=${current}&page=${Number(page) - 1}`">← Previous</a>
+        <a :class="stories.length === 0 ? 'disabled' : ''" :href="`/?section=${current}&page=${Number(page) + 1}`">Next →</a>
       </div>
 
-      <div class="text-center">
+      <div class="text-center my-2">
           <a href="/about" class="text-underline">About</a>
       </div>
 
     </div>
-    
+
   </template>
 
 </div>

@@ -6,28 +6,29 @@
   {%- include head.html -%}
 
   <body x-init="init()">
-    <div class="container"
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="brand">
+          <span class="brand-icon">Y</span>
+          <span>HN</span>
+        </a>
+
+        <nav class="nav-pills">
+          <template x-for="section in Object.keys(SECTIONS)">
+            <a :href="`/?section=${section}&page=1`" x-text="section"
+               :class="current === section ? 'active' : ''"></a>
+          </template>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container"
          x-data="{ current: '', page: 1 }"
          x-init="
           current = getParam(window.location.search, 'section') || 'top';
           page = getParam(window.location.search, 'page') || 1">
-      <!-- <h2 class="text-center"><a href="/">{{ site.title }}</a></h2> -->
-
-      <ul class="nav-bar">
-        <li><a href="/?section=top&page=1" id="logo" class="text-bold">AJHN</a></li>
-        <template x-for="section in Object.keys(SECTIONS)">
-          <li>
-            <a :href="`/?section=${section}&page=1`" x-text="section" 
-               :class="current === section ? 'text-bold' : ''">
-               <!-- @click.prevent="current = $el.innerText; page = 1"  -->
-            </a>
-          </li>
-        </template>
-      </ul>
-
       {{ content }}
-
-    </div>
+    </main>
 
     <script>
       function themeHandler() {
